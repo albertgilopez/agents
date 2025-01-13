@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Research Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+    <style>
+        .markdown-content {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            padding: 1.5rem;
+        }
+        .markdown-content h1 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .markdown-content h2 {
+            font-size: 1.375rem;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .markdown-content p {
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+        }
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+        }
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+        }
+        .progress-message {
+            @apply flex items-center space-x-3 p-4 rounded-md mb-3 transition-all duration-300;
+        }
+        .source-item {
+            @apply bg-white rounded-lg p-6 mb-4 border border-gray-100 transition-all duration-300;
+        }
+        .source-header {
+            @apply flex items-start justify-between mb-3;
+        }
+        .source-relevance {
+            @apply bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full font-medium;
+        }
+        .source-details {
+            @apply text-sm text-gray-600 leading-relaxed mt-3 p-3 bg-gray-50 rounded-lg;
+        }
+        .progress-message i {
+            @apply text-lg;
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <div class="bg-white rounded-xl shadow-xl p-8">
+            <div class="flex items-center space-x-3 mb-8">
+                <i class="fas fa-search-dollar text-3xl text-blue-600"></i>
+                <h1 class="text-3xl font-bold text-gray-800">Company Research Assistant</h1>
+            </div>
+            
+            <!-- Description -->
+            <div class="mb-8 bg-blue-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-blue-800 mb-3">How it works</h2>
+                <p class="text-blue-700 leading-relaxed">
+                    Enter a company name and optionally its website URL to get comprehensive research about the company. 
+                    The assistant will analyze multiple sources to provide you with:
+                </p>
+                <ul class="mt-3 space-y-2 text-blue-700">
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-blue-600 mr-2"></i>
+                        Financial overview and performance metrics
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-blue-600 mr-2"></i>
+                        Business model analysis
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-blue-600 mr-2"></i>
+                        Recent developments and news
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-blue-600 mr-2"></i>
+                        Verified sources with relevance scores
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Flow Diagram -->
+            <div class="mb-8 bg-white rounded-lg p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Research Workflow</h2>
+                <pre class="mermaid">
+graph LR
+    A[User Input] -->|Company & URL| B[Initial Grounding]
+    B -->|Research State| C[SEC Data Extraction]
+    C -->|Enhanced Data| D[Generate Report]
+    D -->|Final Report| E[Publish]
+    
+    style A fill:#e3f2fd,stroke:#1e88e5
+    style B fill:#fff8e1,stroke:#ffa000
+    style C fill:#f3e5f5,stroke:#8e24aa
+    style D fill:#e8f5e9,stroke:#43a047
+    style E fill:#fbe9e7,stroke:#d84315
+                </pre>
+            </div>
+            
+            <!-- Research Form -->
+            <form id="researchForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="companyName" class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                        <div class="relative">
+                            <i class="fas fa-building absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="companyName" name="companyName" required
+                                   class="pl-12 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-3 text-base"
+                                   placeholder="e.g. Apple Inc.">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="companyUrl" class="block text-sm font-medium text-gray-700 mb-2">Company URL (Optional)</label>
+                        <div class="relative">
+                            <i class="fas fa-link absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="url" id="companyUrl" name="companyUrl"
+                                   class="pl-12 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all duration-300 py-3 text-base"
+                                   placeholder="e.g. https://www.apple.com">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 flex items-center justify-center space-x-2">
+                    <i class="fas fa-search"></i>
+                    <span>Start Research</span>
+                </button>
+            </form>
+            
+            <!-- Progress Display -->
+            <div id="progress" class="mt-8 space-y-4 hidden">
+                <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
+                    <div class="animate-spin text-blue-600">
+                        <i class="fas fa-circle-notch text-xl"></i>
+                    </div>
+                    <p class="text-blue-700 font-medium">Research in progress...</p>
+                </div>
+                <div id="messages" class="bg-gray-50 rounded-lg p-6 space-y-3 max-h-96 overflow-y-auto"></div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-6 text-gray-600 text-sm">
+            Made with <i class="fas fa-heart text-red-500 mx-1"></i> by 
+            <a href="https://www.himia.app/" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                M.IA Financial Intelligence Agents
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        const form = document.getElementById('researchForm');
+        const progress = document.getElementById('progress');
+        const messages = document.getElementById('messages');
+
+        function createMessageElement(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'progress-message';
+            
+            let icon, bgColor, textColor;
+            switch(type) {
+                case 'success':
+                    icon = 'fa-check-circle';
+                    bgColor = 'bg-green-50';
+                    textColor = 'text-green-700';
+                    break;
+                case 'error':
+                    icon = 'fa-exclamation-circle';
+                    bgColor = 'bg-red-50';
+                    textColor = 'text-red-700';
+                    break;
+                case 'warning':
+                    icon = 'fa-exclamation-triangle';
+                    bgColor = 'bg-yellow-50';
+                    textColor = 'text-yellow-700';
+                    break;
+                default:
+                    icon = 'fa-info-circle';
+                    bgColor = 'bg-blue-50';
+                    textColor = 'text-blue-700';
+            }
+            
+            messageDiv.classList.add(bgColor, textColor);
+            messageDiv.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span class="flex-1">${message}</span>
+            `;
+            
+            return messageDiv;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (ws) {
+                ws.close();
+            }
+            messages.innerHTML = '';
+            progress.classList.remove('hidden');
+            
+            const formData = {
+                companyName: document.getElementById('companyName').value,
+                companyUrl: document.getElementById('companyUrl').value || null,
+                outputFormat: "markdown"
+            };
+            
+            // Use wss:// for HTTPS and ws:// for HTTP
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = () => {
+                console.log('WebSocket connection opened');
+                messages.appendChild(createMessageElement('Connected to research service', 'success'));
+                ws.send(JSON.stringify(formData));
+            };
+            
+            ws.onmessage = (event) => {
+                console.log('Received message:', event.data);
+                const message = event.data;
+                
+                try {
+                    if (message.includes('```markdown')) {
+                        const parts = message.split('```markdown');
+                        const header = parts[0];
+                        const report = parts[1].split('```')[0];
+                        
+                        const headerDiv = document.createElement('div');
+                        headerDiv.className = 'markdown-content bg-white rounded-lg shadow-sm p-6 mb-4';
+                        headerDiv.innerHTML = marked.parse(header);
+                        messages.appendChild(headerDiv);
+                        
+                        const reportDiv = document.createElement('div');
+                        reportDiv.className = 'markdown-content bg-white rounded-lg shadow-sm p-6';
+                        reportDiv.innerHTML = marked.parse(report);
+                        messages.appendChild(reportDiv);
+                    } else if (message.startsWith('### Initial Research Results')) {
+                        const resultDiv = document.createElement('div');
+                        resultDiv.className = 'bg-white rounded-lg shadow-sm p-6 space-y-4 mb-4';
+                        
+                        // Split into sections
+                        const sections = message.split('**Sources Consulted**');
+                        const summary = sections[0];
+                        const sources = sections[1];
+                        
+                        // Create summary section
+                        const summaryDiv = document.createElement('div');
+                        summaryDiv.className = 'prose max-w-none';
+                        summaryDiv.innerHTML = marked.parse(summary);
+                        resultDiv.appendChild(summaryDiv);
+                        
+                        // Create sources section
+                        if (sources) {
+                            const sourcesDiv = document.createElement('div');
+                            sourcesDiv.className = 'mt-6';
+                            
+                            // Add sources header
+                            const sourcesHeader = document.createElement('h3');
+                            sourcesHeader.className = 'text-lg font-semibold text-gray-800 mb-4';
+                            sourcesHeader.textContent = 'Sources Consulted';
+                            sourcesDiv.appendChild(sourcesHeader);
+                            
+                            // Process each source
+                            const sourceMatches = sources.matchAll(/<details>[\s\S]*?<summary>(.*?)\(Relevance: (\d+)%\)<\/summary>([\s\S]*?)<\/details>/g);
+                            for (const match of sourceMatches) {
+                                const [_, sourceName, relevance, details] = match;
+                                
+                                const sourceDiv = document.createElement('div');
+                                sourceDiv.className = 'bg-gray-50 rounded-lg p-4 mb-3 hover:bg-gray-100 transition-colors';
+                                
+                                // Extract URL and content preview from details
+                                const urlMatch = details.match(/\*\*URL\*\*: \[(.*?)\]/);
+                                const contentMatch = details.match(/\*\*Content Preview\*\*:\s*([\s\S]*?)(?=<\/details>|$)/);
+                                
+                                sourceDiv.innerHTML = `
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex-1">
+                                                <p class="text-gray-800 font-medium">${sourceName.trim()}</p>
+                                                ${urlMatch ? `<a href="${urlMatch[1]}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm truncate block">${urlMatch[1]}</a>` : ''}
+                                            </div>
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full ml-2">
+                                                ${relevance}% relevance
+                                            </span>
+                                        </div>
+                                        ${contentMatch ? `
+                                            <div class="text-sm text-gray-600 bg-white rounded p-3 mt-2">
+                                                ${contentMatch[1].trim()}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                                
+                                sourcesDiv.appendChild(sourceDiv);
+                            }
+                            
+                            resultDiv.appendChild(sourcesDiv);
+                        }
+                        
+                        messages.appendChild(resultDiv);
+                    } else {
+                        let type = 'info';
+                        if (message.includes('✅') || message.includes('✓')) type = 'success';
+                        if (message.includes('⚠️')) type = 'warning';
+                        if (message.includes('❌')) type = 'error';
+                        
+                        messages.appendChild(createMessageElement(message, type));
+                    }
+                    
+                    messages.scrollTop = messages.scrollHeight;
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                    messages.appendChild(createMessageElement(message, 'error'));
+                }
+            };
+            
+            ws.onclose = (event) => {
+                console.log('WebSocket closed:', event.code, event.reason);
+                if (event.code === 1000 && !messages.lastElementChild?.textContent?.includes('Research completed')) {
+                    messages.appendChild(createMessageElement('✓ Research completed', 'success'));
+                }
+                
+                const spinner = progress.querySelector('.animate-spin');
+                if (spinner) {
+                    spinner.parentElement.remove();
+                }
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                messages.appendChild(createMessageElement('⚠️ Error: Connection failed', 'error'));
+                
+                const spinner = progress.querySelector('.animate-spin');
+                if (spinner) {
+                    spinner.parentElement.remove();
+                }
+            };
+        });
+    </script>
+</body>
+</html> 

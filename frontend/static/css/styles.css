@@ -1,0 +1,149 @@
+/* Custom styles */
+.message {
+    @apply transition-all duration-300;
+}
+
+.message-success {
+    @apply text-green-700 bg-green-50;
+}
+
+.message-error {
+    @apply text-red-700 bg-red-50;
+}
+
+.message-warning {
+    @apply text-yellow-700 bg-yellow-50;
+}
+
+.message-info {
+    @apply text-blue-700 bg-blue-50;
+}
+
+/* Custom scrollbar for messages */
+#messages {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #94A3B8 #E2E8F0;
+}
+
+#messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#messages::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded;
+}
+
+#messages::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded hover:bg-gray-500 transition-colors duration-200;
+}
+
+/* Input styles */
+input[type="text"], input[type="url"] {
+    @apply border border-gray-300 rounded-lg px-4 py-2 w-full outline-none transition-all duration-300;
+}
+
+input[type="text"]:focus, input[type="url"]:focus {
+    @apply border-blue-500 ring-2 ring-blue-200;
+}
+
+/* Card styles */
+.card {
+    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300;
+}
+
+.card:hover {
+    @apply shadow-xl;
+}
+
+/* Button styles */
+.btn {
+    @apply px-6 py-2 rounded-lg font-medium transition-all duration-300;
+}
+
+.btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Animation */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Markdown content styles */
+.markdown-content {
+    @apply prose prose-sm max-w-none;
+}
+
+.markdown-content pre {
+    @apply bg-gray-50 rounded-lg p-4 overflow-x-auto;
+}
+
+.markdown-content code {
+    @apply text-sm bg-gray-50 px-1 py-0.5 rounded;
+}
+
+.markdown-content table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+
+.markdown-content th {
+    @apply px-4 py-2 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.markdown-content td {
+    @apply px-4 py-2 whitespace-nowrap text-sm text-gray-900;
+}
+
+/* Research Results styles */
+.research-result {
+    @apply bg-white rounded-lg shadow-sm p-6 space-y-4;
+}
+
+.research-title {
+    @apply text-lg font-semibold text-blue-700 flex items-center space-x-2;
+}
+
+.research-summary {
+    @apply bg-blue-50 rounded-lg p-4 text-blue-800;
+}
+
+.research-sources {
+    @apply space-y-3;
+}
+
+.source-item {
+    @apply bg-gray-50 rounded-lg p-3 text-sm transition-all duration-300;
+}
+
+.source-item:hover {
+    @apply shadow-md;
+}
+
+.source-header {
+    @apply flex justify-between items-center mb-2;
+}
+
+.source-title {
+    @apply font-medium text-gray-800;
+}
+
+.source-relevance {
+    @apply text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full;
+}
+
+.source-details {
+    @apply text-gray-600 space-y-1;
+} 
